@@ -17,6 +17,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="80dp"
             android:gravity="center_horizontal"
+            android:scaleType="centerInside"
             android:src="@drawable/onboard_1" />
 
         <TextView
@@ -24,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="131dp"
+            android:layout_marginTop="100dp"
             android:layout_marginBottom="30dp"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="7sp"
@@ -37,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/avenir_medium"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="6sp"
