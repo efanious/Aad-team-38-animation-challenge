@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">Aad-team-38-animation-challenge</string>
+    <string name="app_name">Dictionary38</string>
+    <string name="textHeaderWifi">Oh No!</string>
+    <string name="textHeaderNoData">Oops! Nothing was displayed</string>
+    <string name="textBodyWifi">It seems you’re not connected\nto the internet</string>
+    <string name="textBodyNoData">It seems there was an error\ngetting your data</string>
+    <string name="button">Retry</string>
+    <string name="PrevButton">Prev</string>
+    <string name="NextButton">Next</string>
+    <string name="BeginButton">Begin</string>
+    <string name="onboard1Header">Easy Search</string>
+    <string name="onboard2Header">Quick Overview</string>
+    <string name="onboard3Header">Enjoy Reading</string>
+    <string name="onboard1Body">Reading should not always have \nto be boring, search for your favourite\nword easily</string>
+    <string name="onboard2Body">Go through the available\nwords as quickly as possible and\nchoose one to read</string>
+    <string name="onboard3Body">Enjoy reading</string>
+
+    <string name="recentWords">Recent Words</string>
+    <string name="enterWord">Enter Word</string>
+
+    <string name="definitionSummary">a person who insists on absolute adherence to traditional rules or structures, especially in language or style: the production has yet to offend Gilbert and Sullivan purists | [as modifier]: purist fans of the original comic strip</string>
+    <string name="definition">Definition</string>
+    <string name="black_panther">Black Panther</string>
 </resources>

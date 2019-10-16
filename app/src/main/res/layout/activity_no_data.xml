@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/no_data"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="225dp"
+            android:layout_height="225dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="104dp"
+            android:gravity="center_horizontal"
+            android:src="@drawable/book_stack" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="31.5dp"
+            android:fontFamily="@font/avenir_heavy"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="7sp"
+            android:text="@string/textHeaderNoData"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="276dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/avenir_book"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="6sp"
+            android:text="@string/textBodyNoData"
+            android:textColor="#242424"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/retryNoData"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/buttons"
+        android:fontFamily="@font/avenir_heavy"
+        android:text="@string/button"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBackground"
+        android:textSize="16sp" />
+
+</RelativeLayout>
