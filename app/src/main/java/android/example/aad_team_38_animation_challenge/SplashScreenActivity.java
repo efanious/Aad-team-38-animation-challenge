@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
@@ -19,6 +20,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 Intent homeIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(homeIntent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
             }
         }, SPLASH_TIME_OUT);
