@@ -12,11 +12,12 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/avenir_medium"
         android:text="Indebted"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorDark"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"/>
 
     <View
         android:id="@+id/view"
