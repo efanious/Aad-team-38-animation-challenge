@@ -13,9 +13,9 @@ import retrofit2.http.GET;
 
 public class RequestInterface {
     private static Retrofit retrofit;
-//    private static final String BASE_URL = "https://api.datamuse.com/";
+    private static final String BASE_URL = "https://api.datamuse.com/";
 
-    private static final String BASE_URL = "https://random-word-api.herokuapp.com/";
+
 
     public static Retrofit getRetrofitInstance(){
         if (retrofit == null){
@@ -29,8 +29,7 @@ public class RequestInterface {
 
 
     public interface GetDataService{
-//        @GET("words?ml=duck&sp=b*&max=20")
-        @GET("all?key=GCTXPYH1")
+        @GET("words?ml=duck&sp=b*&max=20")
         Call<List<Words>> getJSON();
     }
 
