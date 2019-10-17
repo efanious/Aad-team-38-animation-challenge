@@ -10,10 +10,13 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class RequestInterface {
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://api.datamuse.com/";
+//    private static final String BASE_URL = "https://api.datamuse.com/";
+private static final String BASE_URL = "https://mydictionaryapi.appspot.com/";
 
 
 
@@ -29,8 +32,9 @@ public class RequestInterface {
 
 
     public interface GetDataService{
-        @GET("words?ml=duck&sp=b*&max=20")
-        Call<List<Words>> getJSON();
+//        @GET("words?ml=duck&sp=b*&max=20")
+        @GET("?define=")
+        Call<List<Words>> getJSON(@Query("word") String word);
     }
 
 }

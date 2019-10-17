@@ -47,35 +47,20 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
         super.onCreate(savedInstanceState);
 
         //set search
-        mEditText = findViewById(R.id.editText);
+        mEditText = findViewById(R.id.words_search);
         search = findViewById(R.id.search);
+
+
 
 
         //progress dialog
         mProgressDialog = new ProgressDialog(MainActivity.this);
         mProgressDialog.setMessage("Loading...");
-        mProgressDialog.show();
+        mProgressDialog.hide();
 
         //online dictionary initialized
 
-        RequestInterface.GetDataService service = RequestInterface.getRetrofitInstance()
-                .create(RequestInterface.GetDataService.class);
-        Call<List<Words>> call = service.getJSON();
-        call.enqueue(new Callback<List<Words>>() {
-            @Override
-            public void onResponse(Call<List<Words>> call, final Response<List<Words>> response) {
-                mProgressDialog.dismiss();
-                initViews(response.body());
 
-            }
-
-            @Override
-            public void onFailure(Call<List<Words>> call, Throwable t) {
-                mProgressDialog.dismiss();
-                Toast.makeText(MainActivity.this, "Something went Wrong",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
 
@@ -148,5 +133,30 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
         startActivity(intent);
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
+    }
+
+    public void searchWord(View view) {
+        mProgressDialog.show();
+        String name = mEditText.getText().toString();
+        final RequestInterface.GetDataService service = RequestInterface.getRetrofitInstance()
+                .create(RequestInterface.GetDataService.class);
+
+        Call<List<Words>> call = service.getJSON(name);
+        call.enqueue(new Callback<List<Words>>() {
+            @Override
+            public void onResponse(Call<List<Words>> call, final Response<List<Words>> response) {
+                mProgressDialog.dismiss();
+                initViews(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Words>> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(MainActivity.this, "Something went Wrong",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
