@@ -1,32 +1,38 @@
 package android.example.aad_team_38_animation_challenge;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.CustomAdapter;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.RequestInterface;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.Words;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryAdapter;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryInfo;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryResult;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.LexicalEntry;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.MainApplication;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements WordAdapter.OnWordListener {
+public class MainActivity extends AppCompatActivity implements WordAdapter.OnWordListener, View.OnClickListener,
+        Callback<DictionaryInfo> {
+    private static final String TAG = "MainActivity";
     private List<Word> mWordList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -34,32 +40,34 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
 
 
     //online dictionary
+    private DictionaryAdapter adapter;
+    private EditText searchEditText;
+    private String word;
+    private TextView wordTextView;
+    private ListView dictionaryEntriesListView;
+    private ProgressDialog progressDialog;
 
-    private List<Words> word;
-    private CustomAdapter adapter;
-    ProgressDialog mProgressDialog;
 
-    EditText mEditText;
-    ImageView search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        //set search
-        mEditText = findViewById(R.id.words_search);
-        search = findViewById(R.id.search);
-
-
-
-
-        //progress dialog
-        mProgressDialog = new ProgressDialog(MainActivity.this);
-        mProgressDialog.setMessage("Loading...");
-        mProgressDialog.hide();
 
         //online dictionary initialized
+        dictionaryEntriesListView = findViewById(R.id.list_view);
+        adapter = new DictionaryAdapter(this, Collections.<LexicalEntry>emptyList());
+        dictionaryEntriesListView.setAdapter(adapter);
 
+        findViewById(R.id.search).setOnClickListener(this);
+
+        searchEditText = findViewById(R.id.words_search);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.hide();
+
+        wordTextView = findViewById(R.id.words_word);
 
 
 
@@ -74,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
             startActivity(onboarding_activity);
         }
 
-        setContentView(R.layout.activity_main);
 
 
 
@@ -87,16 +94,6 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
 
 //        prepareWordsData();
     }
-
-    // online dictionary views
-    private void initViews(List<Words> words){
-        mRecyclerView = findViewById(R.id.recyclerView);
-        adapter = new CustomAdapter(this,words);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(adapter);
-    }
-
 
 
     private void prepareWordsData() {
@@ -135,28 +132,54 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
     }
 
-    public void searchWord(View view) {
-        mProgressDialog.show();
-        String name = mEditText.getText().toString();
-        final RequestInterface.GetDataService service = RequestInterface.getRetrofitInstance()
-                .create(RequestInterface.GetDataService.class);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.search:
+                word = searchEditText.getText().toString().toLowerCase();
+                progressDialog.show();
+                MainApplication.apiManager.getDictionaryEntries(word, this);
+                break;
+        }
+    }
 
-        Call<List<Words>> call = service.getJSON(name);
-        call.enqueue(new Callback<List<Words>>() {
-            @Override
-            public void onResponse(Call<List<Words>> call, final Response<List<Words>> response) {
-                mProgressDialog.dismiss();
-                initViews(response.body());
+    @Override
+    public void onResponse(@NonNull Call<DictionaryInfo> call,@NonNull Response<DictionaryInfo> response) {
+        progressDialog.hide();
 
+        if (response.isSuccessful()){
+            DictionaryInfo body = response.body();
+            assert body != null;
+            DictionaryResult dictionaryResult = body.getResults().get(0);
+
+            wordTextView.setText(dictionaryResult.getWord());
+            adapter.setLexicalEntries(dictionaryResult.getLexicalEntries());
+
+            wordTextView.setVisibility(View.VISIBLE);
+            dictionaryEntriesListView.setVisibility(View.VISIBLE);
+        }else {
+            dictionaryEntriesListView.setVisibility(View.GONE);
+            wordTextView.setVisibility(View.GONE);
+            switch (response.code()){
+                case 403:
+                    try {
+                        Toast.makeText(this, "" + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 400:
+                case 404:
+                    Toast.makeText(this, "Invalid Word" + response.errorBody(), Toast.LENGTH_SHORT).show();
+                    break;
             }
+        }
 
-            @Override
-            public void onFailure(Call<List<Words>> call, Throwable t) {
-                mProgressDialog.dismiss();
-                Toast.makeText(MainActivity.this, "Something went Wrong",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+    }
 
+    @Override
+    public void onFailure(@NonNull Call<DictionaryInfo> call, Throwable t) {
+        progressDialog.hide();
+        Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

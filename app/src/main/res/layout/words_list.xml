@@ -6,10 +6,19 @@
     android:layout_margin="4dp">
 
     <TextView
-        android:id="@+id/txtWord"
-        android:layout_width="wrap_content"
+        android:id="@+id/lexical_category"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="Wat" />
+        android:text="Noun or Verb or ..."
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+    <TextView
+        android:id="@+id/definition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Definintion"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
 </LinearLayout>
