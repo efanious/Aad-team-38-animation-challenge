@@ -45,6 +45,7 @@
         app:srcCompat="@drawable/ic_dictionary_splash" />
 
     <TextView
+        android:id="@+id/splash_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
