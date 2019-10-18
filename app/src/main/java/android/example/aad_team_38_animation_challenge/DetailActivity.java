@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
     TextView wordTitleTextview, wordDefinitionTextview;
+    ImageView mCloseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +24,13 @@ public class DetailActivity extends AppCompatActivity {
         // Get the views
         wordTitleTextview = findViewById(R.id.word_title);
         wordDefinitionTextview = findViewById(R.id.word_definition);
-        ImageView closeButton = findViewById(R.id.close_button);
+        mCloseButton = findViewById(R.id.close_button);
 
         // Bind the data
         wordTitleTextview.setText(wordTitle);
         wordDefinitionTextview.setText(wordDefinition);
 
-        closeButton.setOnClickListener(new View.OnClickListener() {
+        /*closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailActivity.this, MainActivity.class);
@@ -38,6 +39,19 @@ public class DetailActivity extends AppCompatActivity {
 
                 finish();
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void onBackPressed(){
+        closeDetailActivity(mCloseButton);
+    }
+
+    public void closeDetailActivity(View view) {
+        Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
+        finish();
     }
 }

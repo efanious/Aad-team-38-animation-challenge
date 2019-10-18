@@ -35,6 +35,7 @@
 
             <ImageView
                 android:id="@+id/close_button"
+                android:onClick="closeDetailActivity"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="15dp"
