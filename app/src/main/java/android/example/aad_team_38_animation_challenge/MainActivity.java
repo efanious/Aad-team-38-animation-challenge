@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        MainActivity.super.onBackPressed();
+                        finishAffinity();
                     }
                 })
                 .setNegativeButton("No", null)
