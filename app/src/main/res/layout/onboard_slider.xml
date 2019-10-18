@@ -30,7 +30,7 @@
             android:gravity="center_horizontal"
             android:lineSpacingExtra="7sp"
             android:text="@string/onboard1Header"
-            android:textColor="#4c847c"
+            android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 
         <TextView

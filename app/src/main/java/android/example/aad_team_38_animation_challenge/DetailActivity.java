@@ -4,13 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
     TextView wordTitleTextview, wordDefinitionTextview;
-    ImageView mCloseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,6 @@ public class DetailActivity extends AppCompatActivity {
         // Get the views
         wordTitleTextview = findViewById(R.id.word_title);
         wordDefinitionTextview = findViewById(R.id.word_definition);
-        mCloseButton = findViewById(R.id.close_button);
 
         // Bind the data
         wordTitleTextview.setText(wordTitle);
@@ -40,18 +39,31 @@ public class DetailActivity extends AppCompatActivity {
                 finish();
             }
         });*/
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onBackPressed(){
-        closeDetailActivity(mCloseButton);
+        closeDetailActivity();
     }
 
-    public void closeDetailActivity(View view) {
+    public void closeDetailActivity() {
         Intent intent = new Intent(DetailActivity.this, MainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
