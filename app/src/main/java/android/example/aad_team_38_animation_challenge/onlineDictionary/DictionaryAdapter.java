@@ -49,7 +49,7 @@ public class DictionaryAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null){
             convertView = LayoutInflater.from(context).inflate(
-                    R.layout.words_list, parent, false
+                    R.layout.word_definition_item, parent, false
             );
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
@@ -61,7 +61,7 @@ public class DictionaryAdapter extends BaseAdapter {
 
         Senses sense = entry.getSenses().get(0);
         viewHolder.definition.setText(sense.getDefinitions().get(0));
-        viewHolder.lexicalCategory.setText(lexicalEntry.getLexicalCategory().getText());
+        viewHolder.lexicalCategory.setText("'" + lexicalEntry.getLexicalCategory().getText().toLowerCase() + "'");
         return convertView;
     }
 
@@ -71,7 +71,7 @@ public class DictionaryAdapter extends BaseAdapter {
 
         public ViewHolder(View view){
             this.lexicalCategory = view.findViewById(R.id.lexical_category);
-            this.definition = view.findViewById(R.id.definition);
+            this.definition = view.findViewById(R.id.word_definition);
         }
     }
 }

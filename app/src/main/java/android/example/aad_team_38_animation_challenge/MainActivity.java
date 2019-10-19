@@ -33,9 +33,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements WordAdapter.OnWordListener, View.OnClickListener,
-        Callback<Root> {
-    private static final String TAG = "MainActivity";
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private List<Word> mWordList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     private String word;
     private TextView wordTextView;
     private ListView dictionaryEntriesListView;
-    private ProgressDialog progressDialog;
 
 
     @Override
@@ -57,20 +55,9 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
         setContentView(R.layout.activity_main);
 
 
-        //online dictionary initialized
-        dictionaryEntriesListView = findViewById(R.id.list_view);
-        adapter = new DictionaryAdapter(this, Collections.<LexicalEntries>emptyList());
-        dictionaryEntriesListView.setAdapter(adapter);
-
         findViewById(R.id.search).setOnClickListener(this);
 
         searchEditText = findViewById(R.id.words_search);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.hide();
-
-        wordTextView = findViewById(R.id.words_word);
-
 
         // Check if user has seen the onboarding screen using shared preference
         SharedPreferences preferences = getSharedPreferences("preferences", MODE_PRIVATE);
@@ -82,15 +69,6 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
             startActivity(onboarding_activity);
         }
 
-
-//        mAdapter = new WordAdapter(mWordList, this);
-//        mLayoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-//
-//        mRecyclerView.setAdapter(mAdapter);
-
-//        prepareWordsData();
     }
 
 
@@ -120,17 +98,6 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     }
 
     @Override
-    public void OnItemClicked(int position) {
-        Word word = mWordList.get(position);
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra("word_title", word.getWord());
-        intent.putExtra("word_definition", word.getDefinition());
-        startActivity(intent);
-
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.search:
@@ -138,74 +105,36 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
                     Intent intent = new Intent(MainActivity.this, NoNetwork.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                }else {
+                } else {
                     word = searchEditText.getText().toString().toLowerCase();
-                    progressDialog.show();
-                    MainApplication.apiManager.getDictionaryEntries(word, this);
+                    if(word.isEmpty()) {
+                        startActivity(new Intent(MainActivity.this, NoData.class));
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                        intent.putExtra(DetailActivity.EXTRA_WORD, word);
+                        startActivity(intent);
+                    }
                 }
                 break;
         }
     }
 
     @Override
-    public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
-        progressDialog.hide();
-
-        if (response.isSuccessful()) {
-            Root root = response.body();
-            assert root != null;
-            //Toast.makeText(this, "Result: " + response.body().getResults().toString(), Toast.LENGTH_LONG).show();
-            Results dictionaryResult = root.getResults().get(0);
-
-            wordTextView.setText(root.getWord().toUpperCase());
-            adapter.setLexicalEntries(dictionaryResult.getLexicalEntries());
-
-            wordTextView.setVisibility(View.VISIBLE);
-            dictionaryEntriesListView.setVisibility(View.VISIBLE);
-        } else {
-            dictionaryEntriesListView.setVisibility(View.GONE);
-            wordTextView.setVisibility(View.GONE);
-            switch (response.code()) {
-                case 403:
-                    try {
-                        Toast.makeText(this, "" + response.errorBody().string(), Toast.LENGTH_LONG).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 400:
-                case 404:
-                    startActivity(new Intent(MainActivity.this, NoData.class));
-                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
-                    break;
-            }
-        }
-
-    }
-
-    @Override
-    public void onFailure(@NonNull Call<Root> call, Throwable t) {
-        progressDialog.hide();
-        Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-            new AlertDialog.Builder(this)
-                    .setTitle("Done?")
-                    .setIcon(R.drawable.close_icon)
-                    .setMessage("Are you sure you want to exit?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finishAffinity();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
+        new AlertDialog.Builder(this)
+            .setTitle("Done?")
+            .setIcon(R.drawable.close_icon)
+            .setMessage("Are you sure you want to exit?")
+            .setCancelable(false)
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finishAffinity();
+                }
+            })
+            .setNegativeButton("No", null)
+            .show();
     }
+
     public static boolean getConnectivityStatus(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
