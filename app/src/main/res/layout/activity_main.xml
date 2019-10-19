@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/words_search"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_marginTop="33dp"
@@ -34,17 +34,20 @@
             android:textColorHint="@color/colorDark" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/search"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="end"
             android:layout_marginTop="42dp"
             android:layout_marginEnd="20dp"
-            android:contentDescription="@null"
-            android:src="@drawable/search_icon" />
+            android:contentDescription="search"
+            android:src="@drawable/search_icon"/>
     </FrameLayout>
 
 
+
+    <ListView
+        android:id="@+id/list_view"
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -67,7 +70,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/words_word"
+        tools:listitem="@layout/words_list" />
+
+    <TextView
+        android:id="@+id/words_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="Word..."
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
