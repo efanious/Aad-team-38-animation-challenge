@@ -9,11 +9,12 @@
     <color name="textColor3">#7b6a6a</color>
 
     <color name="colorDark">#242424</color>
-    <color name="colorPDarkAccent">#e0e0e0</color>
+    <color name="colorDarkAccent">#e0e0e0</color>
 
     <color name="colorBright">#fc6681</color>
 
     <color name="colorTheme">#6b63ff</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+
 </resources>

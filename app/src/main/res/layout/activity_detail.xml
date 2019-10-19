@@ -86,79 +86,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/body_dot"
-                android:layout_width="12dp"
-                android:layout_height="24dp"
-                android:background="@color/colorTheme"
-                app:layout_constraintBottom_toBottomOf="@+id/word_type"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/word_type" />
-
-            <TextView
-                android:id="@+id/word_type"
-                android:layout_width="0dp"
+            <ListView
+                android:id="@+id/word_definitions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:fontFamily="@font/avenir_book"
-                android:lineSpacingExtra="6sp"
-                android:text="'noun'"
-                android:textColor="@color/textColor3"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/detail_heading"
-                app:layout_constraintTop_toBottomOf="@+id/detail_heading" />
+                app:layout_constraintTop_toBottomOf="@+id/detail_heading"
+                tools:listitem="@layout/word_definition_item"
+                android:divider="@null"/>
 
-            <TextView
-                android:id="@+id/word_definition"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:fontFamily="@font/avenir_book"
-                android:lineSpacingExtra="6sp"
-                android:text="@string/definitionSummary"
-                android:textColor="@color/textColor3"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/detail_heading"
-                app:layout_constraintTop_toBottomOf="@+id/word_type" />
+<!--            <TextView-->
+<!--                android:id="@+id/word_example"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="start"-->
+<!--                android:layout_marginTop="24dp"-->
+<!--                android:layout_marginEnd="24dp"-->
+<!--                android:fontFamily="@font/avenir_book"-->
+<!--                android:lineSpacingExtra="6sp"-->
+<!--                android:text="Examples"-->
+<!--                android:textColor="@color/textColor3"-->
+<!--                android:textSize="14sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/detail_heading"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/word_definitions" />-->
 
-            <TextView
-                android:id="@+id/word_example"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:fontFamily="@font/avenir_book"
-                android:lineSpacingExtra="6sp"
-                android:text="Examples"
-                android:textColor="@color/textColor3"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/detail_heading"
-                app:layout_constraintTop_toBottomOf="@+id/word_definition" />
-
-            <TextView
-                android:id="@+id/word_example_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/avenir_book"
-                android:lineSpacingExtra="6sp"
-                android:text="Lorem Ipsum dolor sit amet"
-                android:textColor="@color/textColor3"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/detail_heading"
-                app:layout_constraintTop_toBottomOf="@+id/word_example" />
+<!--            <TextView-->
+<!--                android:id="@+id/word_example_text"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="start"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="24dp"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:fontFamily="@font/avenir_book"-->
+<!--                android:lineSpacingExtra="6sp"-->
+<!--                android:text="Lorem Ipsum dolor sit amet"-->
+<!--                android:textColor="@color/textColor3"-->
+<!--                android:textSize="14sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/detail_heading"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/word_example" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

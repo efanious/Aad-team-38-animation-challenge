@@ -17,10 +17,10 @@ import java.util.List;
 
 public class DictionaryAdapter extends BaseAdapter {
     private List<LexicalEntries> lexicalEntries;
-    private Context context;
+    private Context mContext;
 
     public DictionaryAdapter(Context context, List<LexicalEntries> lexicalEntries){
-        this.context = context;
+        this.mContext = context;
         this.lexicalEntries = lexicalEntries;
     }
 
@@ -48,8 +48,8 @@ public class DictionaryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null){
-            convertView = LayoutInflater.from(context).inflate(
-                    R.layout.words_list, parent, false
+            convertView = LayoutInflater.from(mContext).inflate(
+                    R.layout.word_definition_item, parent, false
             );
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
@@ -61,7 +61,7 @@ public class DictionaryAdapter extends BaseAdapter {
 
         Senses sense = entry.getSenses().get(0);
         viewHolder.definition.setText(sense.getDefinitions().get(0));
-        viewHolder.lexicalCategory.setText(lexicalEntry.getLexicalCategory().getText());
+        viewHolder.lexicalCategory.setText("'" + lexicalEntry.getLexicalCategory().getText().toLowerCase() + "'");
         return convertView;
     }
 
@@ -71,7 +71,7 @@ public class DictionaryAdapter extends BaseAdapter {
 
         public ViewHolder(View view){
             this.lexicalCategory = view.findViewById(R.id.lexical_category);
-            this.definition = view.findViewById(R.id.definition);
+            this.definition = view.findViewById(R.id.word_definition);
         }
     }
 }
