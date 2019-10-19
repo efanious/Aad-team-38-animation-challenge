@@ -8,30 +8,56 @@
     tools:context=".SplashScreenActivity">
 
     <ImageView
-        android:id="@+id/splash_image"
-        android:layout_width="271dp"
-        android:layout_height="166dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/splash_logo"
+        android:id="@+id/splash_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.382" />
+        app:srcCompat="@drawable/ic_dictionary_splash_bg" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/splash_image"-->
+<!--        android:layout_width="271dp"-->
+<!--        android:layout_height="166dp"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:src="@drawable/splash_logo"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.382" />-->
+
+    <ImageView
+        android:id="@+id/splash_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/splash_bg"
+        app:layout_constraintEnd_toEndOf="@+id/splash_bg"
+        app:layout_constraintStart_toStartOf="@+id/splash_bg"
+        app:layout_constraintTop_toTopOf="@+id/splash_bg"
+        app:srcCompat="@drawable/ic_dictionary_splash" />
 
     <TextView
+        android:id="@+id/splash_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/avenir_heavy"
-        android:lineSpacingExtra="15sp"
+        android:lineSpacingExtra="10sp"
         android:text="@string/app_name"
-        android:textColor="@color/colorPrimary"
-        android:textSize="40sp"
+        android:textColor="@color/white"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splash_image"
+        app:layout_constraintTop_toBottomOf="@+id/splash_logo"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

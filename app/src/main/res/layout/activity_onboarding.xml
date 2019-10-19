@@ -55,11 +55,11 @@
             android:layout_height="83dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/nextButton"
+            app:layout_constraintStart_toStartOf="@+id/prevButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button

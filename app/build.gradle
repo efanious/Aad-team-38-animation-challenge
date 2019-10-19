@@ -37,4 +37,5 @@ dependencies {
 
     //dictionary api
     implementation 'com.squareup.okhttp:okhttp:2.7.5'
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

@@ -22,9 +22,9 @@ public class SliderAdapter extends PagerAdapter {
 
     // Arrays of images for the onboard slides
     public int[] slide_images = {
-            R.drawable.onboard_1,
-            R.drawable.onboard_2,
-            R.drawable.onboard_3
+            R.drawable.ic_dictionary_search,
+            R.drawable.ic_dictionary_overview,
+            R.drawable.ic_dictionary_lover
     };
 
     public int[] slide_headings = {

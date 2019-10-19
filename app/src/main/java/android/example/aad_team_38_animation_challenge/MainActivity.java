@@ -1,10 +1,12 @@
 package android.example.aad_team_38_animation_challenge;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryAdapter;
@@ -181,5 +183,18 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     public void onFailure(@NonNull Call<DictionaryInfo> call, Throwable t) {
         progressDialog.hide();
         Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Done?")
+                .setIcon(R.drawable.close_icon)
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }
