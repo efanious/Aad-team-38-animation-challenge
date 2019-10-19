@@ -1,4 +1,6 @@
-package android.example.aad_team_38_animation_challenge.onlineDictionary;
+package android.example.aad_team_38_animation_challenge.onlineDictionary.Api;
+
+import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Root;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,8 +30,8 @@ public class ApiManager {
         return apiManager;
     }
 
-    public void getDictionaryEntries(String word, Callback<DictionaryInfo> callback){
-        Call<DictionaryInfo> dictionaryEntries = service.getDictionaryEntries(APP_ID, APP_KEY, word);
+    public void getDictionaryEntries(String word, Callback<Root> callback){
+        Call<Root> dictionaryEntries = service.getDictionaryEntries(APP_ID, APP_KEY, word);
         dictionaryEntries.enqueue(callback);
     }
 }
