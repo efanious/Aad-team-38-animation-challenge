@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.example.aad_team_38_animation_challenge.DictionaryDatabaseContract.WordEntry;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryAdapter;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.MainApplication;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.LexicalEntries;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Results;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Root;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +50,8 @@ public class DetailActivity extends AppCompatActivity implements WordAdapter.OnW
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        enableStrictMode();
+
         Intent intent = getIntent();
         mWord = intent.getStringExtra(EXTRA_WORD);
 
@@ -73,6 +80,25 @@ public class DetailActivity extends AppCompatActivity implements WordAdapter.OnW
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getWordDefinition();
+    }
+
+    private void storeRecentSearch() {
+
+        AsyncTask task = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                DictionaryOpenHelper dictionaryOpenHelper = new DictionaryOpenHelper(DetailActivity.this);
+                SQLiteDatabase db = dictionaryOpenHelper.getReadableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(WordEntry.COLUMN_WORD, mWord);
+                values.put(WordEntry.COLUMN_WORD_TYPE, WordEntry.WORD_TYPE_SEARCH);
+                long newRowId = db.insert(WordEntry.TABLE_NAME, null, values);
+
+                Log.i(TAG, "Searched word inserted into db " + mWord + ": " + newRowId);
+                return null;
+            }
+        };
+        task.execute();
     }
 
     private void getWordDefinition() {
@@ -117,6 +143,8 @@ public class DetailActivity extends AppCompatActivity implements WordAdapter.OnW
 
             mTitleContainer.setVisibility(View.VISIBLE);
             mBodyContainer.setVisibility(View.VISIBLE);
+
+            storeRecentSearch();
         } else {
             switch (response.code()) {
                 case 403:
@@ -158,4 +186,15 @@ public class DetailActivity extends AppCompatActivity implements WordAdapter.OnW
         super.onDestroy();
         progressDialog.dismiss();
     }
+
+    public static void enableStrictMode() {
+        if(BuildConfig.DEBUG) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setThreadPolicy(policy);
+        }
+    }
+
 }

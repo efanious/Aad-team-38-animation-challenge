@@ -18,6 +18,7 @@ import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Ro
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        enableStrictMode();
 
         findViewById(R.id.search).setOnClickListener(this);
 
@@ -148,5 +150,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
         }
         return false;
+    }
+
+    public static void enableStrictMode() {
+        if(BuildConfig.DEBUG) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 }
