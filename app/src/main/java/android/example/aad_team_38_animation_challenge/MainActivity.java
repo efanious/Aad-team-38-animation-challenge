@@ -10,13 +10,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryAdapter;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryInfo;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryResult;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.LexicalEntry;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.MainApplication;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.LexicalEntries;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Results;
+import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Root;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements WordAdapter.OnWordListener, View.OnClickListener,
-        Callback<DictionaryInfo> {
+        Callback<Root> {
     private static final String TAG = "MainActivity";
     private List<Word> mWordList = new ArrayList<>();
     private RecyclerView mRecyclerView;
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
 
         //online dictionary initialized
         dictionaryEntriesListView = findViewById(R.id.list_view);
-        adapter = new DictionaryAdapter(this, Collections.<LexicalEntry>emptyList());
+        adapter = new DictionaryAdapter(this, Collections.<LexicalEntries>emptyList());
         dictionaryEntriesListView.setAdapter(adapter);
 
         findViewById(R.id.search).setOnClickListener(this);
@@ -146,15 +144,16 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     }
 
     @Override
-    public void onResponse(@NonNull Call<DictionaryInfo> call,@NonNull Response<DictionaryInfo> response) {
+    public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
         progressDialog.hide();
 
         if (response.isSuccessful()){
-            DictionaryInfo body = response.body();
-            assert body != null;
-            DictionaryResult dictionaryResult = body.getResults().get(0);
+            Root root = response.body();
+            assert root != null;
+            //Toast.makeText(this, "Result: " + response.body().getResults().toString(), Toast.LENGTH_LONG).show();
+            Results dictionaryResult = root.getResults().get(0);
 
-            wordTextView.setText(dictionaryResult.getWord());
+            wordTextView.setText(root.getWord().toUpperCase());
             adapter.setLexicalEntries(dictionaryResult.getLexicalEntries());
 
             wordTextView.setVisibility(View.VISIBLE);
@@ -180,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     }
 
     @Override
-    public void onFailure(@NonNull Call<DictionaryInfo> call, Throwable t) {
+    public void onFailure(@NonNull Call<Root> call, Throwable t) {
         progressDialog.hide();
         Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
     public void onBackPressed() {
