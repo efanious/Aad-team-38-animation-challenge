@@ -17,10 +17,10 @@ import java.util.List;
 
 public class DictionaryAdapter extends BaseAdapter {
     private List<LexicalEntries> lexicalEntries;
-    private Context context;
+    private Context mContext;
 
     public DictionaryAdapter(Context context, List<LexicalEntries> lexicalEntries){
-        this.context = context;
+        this.mContext = context;
         this.lexicalEntries = lexicalEntries;
     }
 
@@ -48,7 +48,7 @@ public class DictionaryAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null){
-            convertView = LayoutInflater.from(context).inflate(
+            convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.word_definition_item, parent, false
             );
             viewHolder = new ViewHolder(convertView);

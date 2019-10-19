@@ -1,20 +1,21 @@
 package android.example.aad_team_38_animation_challenge;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.DictionaryAdapter;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.MainApplication;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.LexicalEntries;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Results;
-import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Root;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,19 +24,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import static android.example.aad_team_38_animation_challenge.DictionaryDatabaseContract.*;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int LOAD_RECENT_WORDS = 1;
     private List<Word> mWordList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -44,11 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //online dictionary
     private DictionaryAdapter adapter;
-    private EditText searchEditText;
-    private String word;
-    private TextView wordTextView;
-    private ListView dictionaryEntriesListView;
+    private EditText mSearch;
+    private String mWord;
+    private ListView mRecentSearch;
+    private RecentSearchAdapter mRecentSearchAdapter;
 
+    private DictionaryOpenHelper mDbOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.search).setOnClickListener(this);
 
-        searchEditText = findViewById(R.id.words_search);
+        mSearch = findViewById(R.id.words_search);
+        mRecentSearch = findViewById(R.id.recent_search);
 
         // Check if user has seen the onboarding screen using shared preference
         SharedPreferences preferences = getSharedPreferences("preferences", MODE_PRIVATE);
@@ -71,8 +70,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(onboarding_activity);
         }
 
+        mDbOpenHelper = new DictionaryOpenHelper(this);
+        loadRecentSearch();
     }
 
+    private void loadRecentSearch() {
+        mRecentSearchAdapter = new RecentSearchAdapter(this, null);
+        mRecentSearch.setAdapter(mRecentSearchAdapter);
+
+        getSupportLoaderManager().restartLoader(LOAD_RECENT_WORDS, null, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSearch.setText("");
+        getSupportLoaderManager().restartLoader(LOAD_RECENT_WORDS, null, this);
+    }
 
     private void prepareWordsData() {
         Word word = new Word("indebted", "owing money: heavily indebted countries.");
@@ -108,12 +122,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
-                    word = searchEditText.getText().toString().toLowerCase();
-                    if(word.isEmpty()) {
+                    mWord = mSearch.getText().toString().toLowerCase();
+                    if(mWord.isEmpty()) {
                         startActivity(new Intent(MainActivity.this, NoData.class));
                     } else {
                         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                        intent.putExtra(DetailActivity.EXTRA_WORD, word);
+                        intent.putExtra(DetailActivity.EXTRA_WORD, mWord);
                         startActivity(intent);
                     }
                 }
@@ -159,6 +173,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .penaltyLog()
                     .build();
             StrictMode.setThreadPolicy(policy);
+        }
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        CursorLoader loader = null;
+        if(id == LOAD_RECENT_WORDS) {
+            loader = new CursorLoader(this) {
+                @Override
+                public Cursor loadInBackground() {
+                    SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
+                    final String[] wordColumns = {
+                            WordEntry.COLUMN_WORD
+                    };
+                    final String wordOrderBy = WordEntry._ID + " DESC";
+                    String selection = WordEntry.COLUMN_WORD_TYPE + " = ?";
+                    String[] selectionArgs = {
+                            WordEntry.WORD_TYPE_SEARCH
+                    };
+
+                    return db.query(true, WordEntry.TABLE_NAME, wordColumns, selection, selectionArgs, null, null, wordOrderBy, "8");
+                }
+            };
+
+        }
+        return loader;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        int id = loader.getId();
+        if(id == LOAD_RECENT_WORDS) {
+            mRecentSearchAdapter.changeCursor(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        int id = loader.getId();
+        if(id == LOAD_RECENT_WORDS) {
+            mRecentSearchAdapter.changeCursor(null);
         }
     }
 }

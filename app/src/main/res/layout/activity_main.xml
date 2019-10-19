@@ -45,15 +45,30 @@
             android:src="@drawable/ic_search_icon"/>
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/recent_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/avenir_heavy"
+        android:text="@string/recent"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frameLayout"
+        android:textColor="@color/colorPrimaryDark"/>
+
     <ListView
-        android:id="@+id/list_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/recent_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/words_list" />
+        app:layout_constraintTop_toBottomOf="@id/recent_title"
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/word_row"
+        android:divider="@null"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
