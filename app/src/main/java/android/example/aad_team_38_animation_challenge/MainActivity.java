@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,8 @@ import android.example.aad_team_38_animation_challenge.onlineDictionary.MainAppl
 import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.LexicalEntries;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Results;
 import android.example.aad_team_38_animation_challenge.onlineDictionary.Model.Root;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -48,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     private ProgressDialog progressDialog;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +66,10 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
 
         searchEditText = findViewById(R.id.words_search);
         progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.hide();
 
         wordTextView = findViewById(R.id.words_word);
-
-
 
 
         // Check if user has seen the onboarding screen using shared preference
@@ -81,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
             Intent onboarding_activity = new Intent(this, activity_onboarding.class);
             startActivity(onboarding_activity);
         }
-
-
 
 
 //        mAdapter = new WordAdapter(mWordList, this);
@@ -134,11 +132,17 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.search:
-                word = searchEditText.getText().toString().toLowerCase();
-                progressDialog.show();
-                MainApplication.apiManager.getDictionaryEntries(word, this);
+                if (!getConnectivityStatus(MainActivity.this)){
+                    Intent intent = new Intent(MainActivity.this, NoNetwork.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }else {
+                    word = searchEditText.getText().toString().toLowerCase();
+                    progressDialog.show();
+                    MainApplication.apiManager.getDictionaryEntries(word, this);
+                }
                 break;
         }
     }
@@ -147,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
         progressDialog.hide();
 
-        if (response.isSuccessful()){
+        if (response.isSuccessful()) {
             Root root = response.body();
             assert root != null;
             //Toast.makeText(this, "Result: " + response.body().getResults().toString(), Toast.LENGTH_LONG).show();
@@ -158,10 +162,10 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
 
             wordTextView.setVisibility(View.VISIBLE);
             dictionaryEntriesListView.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             dictionaryEntriesListView.setVisibility(View.GONE);
             wordTextView.setVisibility(View.GONE);
-            switch (response.code()){
+            switch (response.code()) {
                 case 403:
                     try {
                         Toast.makeText(this, "" + response.errorBody().string(), Toast.LENGTH_LONG).show();
@@ -171,7 +175,8 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
                     break;
                 case 400:
                 case 404:
-                    Toast.makeText(this, "Invalid Word" + response.errorBody(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, NoData.class));
+                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     break;
             }
         }
@@ -182,18 +187,37 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.OnWor
     public void onFailure(@NonNull Call<Root> call, Throwable t) {
         progressDialog.hide();
         Toast.makeText(this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Done?")
-                .setIcon(R.drawable.close_icon)
-                .setMessage("Are you sure you want to exit?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finishAffinity();
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
+//        super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setTitle("Done?")
+                    .setIcon(R.drawable.close_icon)
+                    .setMessage("Are you sure you want to exit?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finishAffinity();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+    }
+    public static boolean getConnectivityStatus(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (null != activeNetwork) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
+                return true;
+
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+                return true;
+        }
+        return false;
     }
 }

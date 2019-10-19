@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.example.aad_team_38_animation_challenge">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -25,6 +26,8 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/MainTheme" />
+        <activity android:name=".NoNetwork" />
+        <activity android:name=".NoData" />
 
     </application>
 
