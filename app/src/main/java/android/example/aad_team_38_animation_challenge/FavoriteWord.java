@@ -2,6 +2,7 @@ package android.example.aad_team_38_animation_challenge;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 
+import android.view.MenuItem;
 import android.view.View;
 
 public class FavoriteWord extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -66,7 +68,7 @@ public class FavoriteWord extends AppCompatActivity implements LoaderManager.Loa
         return new CursorLoader(this){
             @Override
             public Cursor loadInBackground() {
-                SQLiteDatabase db =mDicOpenHelper.getReadableDatabase();
+                SQLiteDatabase db = mDicOpenHelper.getReadableDatabase();
 
                 String selection = WordEntry.COLUMN_WORD_TYPE + " = ?";
                 String[] selectionArgs = {WordEntry.WORD_TYPE_FAVOURITE};
@@ -90,4 +92,20 @@ public class FavoriteWord extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(FavoriteWord.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(FavoriteWord.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -94,12 +94,12 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
                 }
             });
 
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // TODO: add the delete favorite word method here
-                }
-            });
+//            deleteButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    // TODO: add the delete favorite word method here
+//                }
+//            });
 
             Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
             view.setAnimation(animation);
