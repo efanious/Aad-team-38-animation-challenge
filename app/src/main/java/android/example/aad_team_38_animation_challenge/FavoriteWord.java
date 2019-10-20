@@ -1,7 +1,9 @@
 package android.example.aad_team_38_animation_challenge;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,10 +27,12 @@ public class FavoriteWord extends AppCompatActivity implements LoaderManager.Loa
 
     public static final int LOADER_FAV_WORDS = 0;
     private RecyclerView mRecyclerView;
-    private DictionaryOpenHelper mDicOpenHelper;
+    private static DictionaryOpenHelper mDicOpenHelper;
     private Cursor mWordCursor;
-    private FavWordAdapter mFavWordRecyclerAdapter;
+    FavWordAdapter mFavWordRecyclerAdapter;
     private LayoutManager mWordsLayoutManager;
+    private Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,7 @@ public class FavoriteWord extends AppCompatActivity implements LoaderManager.Loa
                 String selection = WordEntry.COLUMN_WORD_TYPE + " = ?";
                 String[] selectionArgs = {WordEntry.WORD_TYPE_FAVOURITE};
 
-                final String[] columns = {WordEntry.COLUMN_WORD};
+                final String[] columns = {WordEntry._ID, WordEntry.COLUMN_WORD};
                 final String wordOrderBy = WordEntry._ID;
                 return db.query(WordEntry.TABLE_NAME, columns, selection,
                         selectionArgs, null, null, wordOrderBy); }
@@ -107,5 +112,11 @@ public class FavoriteWord extends AppCompatActivity implements LoaderManager.Loa
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFavWordRecyclerAdapter.notifyDataSetChanged();
     }
 }

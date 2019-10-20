@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="8dp">
@@ -15,11 +15,11 @@
         android:layout_height="wrap_content">
 
         <TextView
+
             android:id="@+id/word"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:layout_marginStart="24dp"
             android:fontFamily="@font/avenir_medium"
             android:text="@string/word_row_dummy_word"
             android:textColor="@color/colorDark"
@@ -29,7 +29,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-
             android:id="@+id/btn_delete_fav_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,16 +39,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_close_white" />
-        <View
 
-            android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="#E7E4E4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/word" />
+        <!--        <View-->
+
+        <!--            android:id="@+id/view"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="2dp"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:background="#E7E4E4"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/word" />-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
