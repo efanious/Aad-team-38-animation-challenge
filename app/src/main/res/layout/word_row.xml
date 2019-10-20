@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/avenir_medium"
-        android:text="Indebted"
+        android:text="@string/word_row_dummy_word"
         android:textColor="@color/colorDark"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

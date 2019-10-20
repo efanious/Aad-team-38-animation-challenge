@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".FavoriteWord"
+    tools:showIn="@layout/activity_favorite_word">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_fav_words"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="225dp"
+        tools:layout_editor_absoluteY="191dp"
+        tools:listitem="@layout/fav_word_row" />
+</androidx.constraintlayout.widget.ConstraintLayout>

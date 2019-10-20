@@ -22,4 +22,7 @@
     <string name="definition">Definition</string>
     <string name="black_panther">Black Panther</string>
     <string name="recent">Recent Search</string>
+    <string name="title_activity_favorite_word">FavoriteWord</string>
+    <string name="delete_button_desc">delete button image</string>
+    <string name="word_row_dummy_word">Indebted</string>
 </resources>
