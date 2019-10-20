@@ -20,6 +20,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -216,5 +218,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(id == LOAD_RECENT_WORDS) {
             mRecentSearchAdapter.changeCursor(null);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_favourite:
+                Intent intent = new Intent(MainActivity.this, FavoriteWord.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
