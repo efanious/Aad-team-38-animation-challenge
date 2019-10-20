@@ -84,8 +84,6 @@ public class RecentSearchAdapter extends BaseAdapter {
         mCursor.moveToPosition(position);
         viewHolder.word.setText(mCursor.getString(mWordPos));
 
-        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.list_slide_in_left);
-        convertView.setAnimation(animation);
         return convertView;
     }
 

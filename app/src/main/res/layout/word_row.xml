@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="2.5dp"
     app:cardUseCompatPadding="true"
-    app:contentPadding="8dp">
+    app:contentPadding="0dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,11 +21,14 @@
             android:id="@+id/word"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:fontFamily="@font/avenir_medium"
             android:text="@string/word_row_dummy_word"
             android:textColor="@color/colorDark"
             android:textSize="20sp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

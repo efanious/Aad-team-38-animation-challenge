@@ -68,6 +68,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         holder.word.setText(mCursor.getString(mWordPos));
+        holder.mId = mCursor.getInt(mIdPos);
     }
 
     @Override
@@ -88,6 +89,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView word;
         private ImageButton deleteButton;
+        public int mId;
 
         ViewHolder(View view){
             super(view);
@@ -106,7 +108,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    deleteRow(Integer.valueOf(mCursor.getString(mIdPos)), word.getText().toString());
+                    deleteRow(mId, word.getText().toString());
                 }
             });
 
@@ -122,7 +124,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            deleteFromRow(word);
+                            deleteFromRow(rowId);
                             Intent intent = new Intent(mContext, FavoriteWord.class);
                             mContext.startActivity(intent);
                         }
@@ -130,8 +132,8 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
                     .setNegativeButton("No", null)
                     .show();
         }
-        void deleteFromRow(String word) {
-            String selection = WordEntry.COLUMN_WORD + " = ?";
+        void deleteFromRow(int id) {
+            String selection = WordEntry._ID + " = ?";
             String[] selectionArgs = {String.valueOf(id)};
             SQLiteDatabase db = mDicOpenHelper.getWritableDatabase();
             db.delete(WordEntry.TABLE_NAME, selection, selectionArgs);
