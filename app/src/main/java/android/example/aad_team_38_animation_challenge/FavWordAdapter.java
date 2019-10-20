@@ -114,15 +114,15 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
             view.setAnimation(animation);
         }
 
-        void deleteRow(final int rowId, String word){
+        void deleteRow(final int rowId, final String word){
             new AlertDialog.Builder(mContext)
-                    .setTitle("Done?")
+                    .setTitle("Delete")
                     .setIcon(R.drawable.close_icon)
                     .setMessage("Are you sure you want to delete \"" + word + "\"")
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            deleteFromRow(rowId);
+                            deleteFromRow(word);
                             Intent intent = new Intent(mContext, FavoriteWord.class);
                             mContext.startActivity(intent);
                         }
@@ -130,9 +130,9 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
                     .setNegativeButton("No", null)
                     .show();
         }
-        void deleteFromRow(int id) {
-            String selection = WordEntry._ID + " = ?";
-            String[] selectionArgs = {Integer.toString(id)};
+        void deleteFromRow(String word) {
+            String selection = WordEntry.COLUMN_WORD + " = ?";
+            String[] selectionArgs = {String.valueOf(id)};
             SQLiteDatabase db = mDicOpenHelper.getWritableDatabase();
             db.delete(WordEntry.TABLE_NAME, selection, selectionArgs);
         }
