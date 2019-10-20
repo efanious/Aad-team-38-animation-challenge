@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -98,6 +100,9 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
                     // TODO: add the delete favorite word method here
                 }
             });
+
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.fade_in);
+            view.setAnimation(animation);
         }
     }
 
