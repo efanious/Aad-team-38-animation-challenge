@@ -52,13 +52,14 @@ public class FavoriteWord extends AppCompatActivity implements LoaderManager.Loa
         mRecyclerView.setLayoutManager(mWordsLayoutManager);
         mRecyclerView.setAdapter(mFavWordRecyclerAdapter);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onBackPressed();
+//            }
+//        });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

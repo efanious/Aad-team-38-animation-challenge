@@ -68,6 +68,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         holder.word.setText(mCursor.getString(mWordPos));
+        holder.mId = mCursor.getInt(mIdPos);
     }
 
     @Override
@@ -88,6 +89,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView word;
         private ImageButton deleteButton;
+        public int mId;
 
         ViewHolder(View view){
             super(view);
@@ -106,7 +108,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    deleteRow(Integer.valueOf(mCursor.getString(mIdPos)), word.getText().toString());
+                    deleteRow(mId, word.getText().toString());
                 }
             });
 
@@ -114,9 +116,9 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
             view.setAnimation(animation);
         }
 
-        void deleteRow(final int rowId, String word){
+        void deleteRow(final int rowId, final String word){
             new AlertDialog.Builder(mContext)
-                    .setTitle("Done?")
+                    .setTitle("Delete")
                     .setIcon(R.drawable.close_icon)
                     .setMessage("Are you sure you want to delete \"" + word + "\"")
                     .setCancelable(false)
@@ -132,7 +134,7 @@ public class FavWordAdapter extends RecyclerView.Adapter<FavWordAdapter.ViewHold
         }
         void deleteFromRow(int id) {
             String selection = WordEntry._ID + " = ?";
-            String[] selectionArgs = {Integer.toString(id)};
+            String[] selectionArgs = {String.valueOf(id)};
             SQLiteDatabase db = mDicOpenHelper.getWritableDatabase();
             db.delete(WordEntry.TABLE_NAME, selection, selectionArgs);
         }
